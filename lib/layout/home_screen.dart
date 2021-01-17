@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:soild_restful/models/post_model.dart';
 import 'package:soild_restful/shared/components.dart';
 
 // layout screen
@@ -9,14 +10,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<dynamic> listOfData = List<dynamic>();
+  List<PostModel> listOfData = List<PostModel>();
 
   @override
   void initState() {
     fetchData().then((value) {
       setState(() {
         print('======================== Hello From init State');
-        print(value[0]);
+        print(value[0].title);
         listOfData.addAll(value);
         // listOfData = value; //this also right
       });
@@ -41,19 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListTile(
                       // one
                       leading: defaultText(
-                        title: "${listOfData[index]['id']}",
+                        title: "${listOfData[index].id}",
                         fontFamily: "Pacifico",
                         fontWeight: FontWeight.normal,
                       ),
                       //two
                       title: defaultText(
-                        title: "${listOfData[index]['title']}",
+                        title: "${listOfData[index].title}",
                         fontFamily: "Pacifico",
                         fontWeight: FontWeight.normal,
                       ),
                       //three
                       subtitle: defaultText(
-                        title: "${listOfData[index]['body']}",
+                        title: "${listOfData[index].body}",
                       ),
                     )),
               );
@@ -63,14 +64,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Future<List<dynamic>> fetchData() async {
-  List<dynamic> list = List<dynamic>();
+Future<List<PostModel>> fetchData() async {
+  List<PostModel> list = List<PostModel>();
   try {
     Dio dio = Dio();
     String url = 'https://jsonplaceholder.typicode.com/';
     dio.options.baseUrl = url;
     await dio.get("posts").then((response) {
-      list = response.data; // as List; is optional for me
+      list = (response.data as List) // as List; is required to use .map
+          .map((json) => PostModel(json))
+          .toList();
 
       print('======================== Hello From fetch data Method');
       print(response.data[4]['title']);
