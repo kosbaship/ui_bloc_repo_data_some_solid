@@ -12,9 +12,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   cupertino_icons: ^1.0.1
   flutter_spinkit: ^4.1.2+1
+  flutter_bloc: ^6.1.1
   dio: ^3.0.10
+  conditional_builder: ^1.0.2
 
 
 dev_dependencies:
