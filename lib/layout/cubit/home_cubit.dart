@@ -1,10 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:soild_restful/data/data_source/api_provider.dart';
 import 'package:soild_restful/data/models/post_model.dart';
+import 'package:soild_restful/data/repository/repository.dart';
 import 'package:soild_restful/layout/cubit/home_states.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
-  HomeCubit() : super(HomeInitialState());
+  Repository repository;
+  HomeCubit(this.repository) : super(HomeInitialState());
 
   static HomeCubit get(context) => BlocProvider.of(context);
 
@@ -13,7 +14,7 @@ class HomeCubit extends Cubit<HomeStates> {
   fetchData() {
     emit(HomeLoadingState());
 
-    APIProvider.getInstance.fetchData().then((value) {
+    repository.fetchData(path: 'posts').then((value) {
       listOfPosts =
           (value.data as List).map((json) => PostModel(json)).toList();
 

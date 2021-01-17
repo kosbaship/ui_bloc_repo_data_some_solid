@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:soild_restful/data/repository/repository.dart';
 
-class APIProvider {
-  static APIProvider getInstance = APIProvider();
+class APIProvider implements Repository {
+  static APIProvider getAPIProviderInstance = APIProvider();
 
   Dio dio = Dio(
     BaseOptions(
@@ -9,7 +10,8 @@ class APIProvider {
     ),
   );
 
-  Future<Response> fetchData() async {
-    return await dio.get("posts");
+  @override
+  Future<Response> fetchData({String path}) async {
+    return await dio.get(path);
   }
 }
