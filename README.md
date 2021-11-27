@@ -1,4 +1,4 @@
-# soild_restful
+# ui_bloc_repo_data_and_some_solid
 
 In this app I used SOILD principle to deal with a restful api
 
